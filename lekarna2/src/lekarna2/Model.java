@@ -25,16 +25,6 @@ public class Model {
 
 	private String pacientIme;
 
-//	public ArrayList<Zapis> izbraniZapisi(String ime) throws Exception {
-//		String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
-//		int idKartoteke = Integer.parseInt(idPacienta);
-//		System.out.println("imeeee je " + idKartoteke);
-//		izbraniZapisi = (ArrayList<Zapis>) ZapisDAO.getInstance().vrniVse(idKartoteke);
-//		System.out.println("dolzina: "+ izbraniZapisi.size());
-//		return izbraniZapisi;
-//
-//	}
-	
 	public ArrayList<Zapis> izbraniZapisi(String ime) throws Exception {
 		String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
 		int idKartoteke = Integer.parseInt(idPacienta);
@@ -43,6 +33,59 @@ public class Model {
 		System.out.println("dolzina: "+ izbraniZapisi.size());
 		return izbraniZapisi;
 
+	}
+	
+	public ArrayList<Zapis> izbraniZapisiLekarnar(String ime) throws Exception {
+		String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
+		int idKartoteke = Integer.parseInt(idPacienta);
+		izbraniZapisi = (ArrayList<Zapis>) ZapisDAO.getInstance().vrniVse(idKartoteke);
+		System.out.println("dolzina: "+ izbraniZapisi.size());
+		return izbraniZapisi;
+
+	}
+	
+	public void izdaj(String avtor, ArrayList<Dopolnilo> dopolnila) throws Exception {
+		try {
+
+			System.out.println("naše ime je: " + this.getPacientIme());
+			String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
+			int idKartoteke = Integer.parseInt(idPacienta);
+			novZapis.setKartoteka_id(idKartoteke);
+			System.out.println(novZapis.getKartoteka_id());
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+			LocalDateTime now = LocalDateTime.now();
+			Date cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+			System.out.println("èas:" + cas);
+			novZapis.setCas(cas);
+			novZapis.setTip("izdaja");
+			novZapis.setAvtor(avtor);
+			System.out.println("avtor je: " + novZapis.getAvtor());
+				ZapisDAO.getInstance().shraniZapis(novZapis);
+
+				System.out.println("ID zapisa: " + novZapis.getId());
+				System.out.println(izbranaDopolnila.size());
+
+				novZapisDopolnila.setZapis_id(novZapis.getId());
+
+				for (int i = 0; i < dopolnila.size(); i++) {
+					izbranaDopolnila.add(dopolnila.get(i).getNaziv());
+				}
+				
+				
+				for (int i = 0; i < izbranaDopolnila.size(); i++) {
+					Dopolnilo izbrano = DopolniloDAO.getInstance().najdiDopolnilo(izbranaDopolnila.get(i));
+					novZapisDopolnila.setDopolnilo_id(izbrano.getId());
+					Zapis_dopolniloDAO.getInstance().shraniZapis_dopolnilo(novZapisDopolnila);
+
+				}
+
+				//novZapis.setDopolnila(izbranaDopolnila);
+				novZapis = new Zapis();
+				novZapisDopolnila = new Zapis_dopolnilo();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public ArrayList<Zapis> getIzbraniZapisi() {
@@ -142,8 +185,7 @@ public class Model {
 			Date cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
 			System.out.println("èas:" + cas);
 			novZapis.setCas(cas);
-			novZapis.setTip_id(1);
-			System.out.println("hahaha: " + novZapis.getCas() + "in " + novZapis.getTip_id());
+			novZapis.setTip("predpis");
 			novZapis.setAvtor(avtor);
 			System.out.println("avtor je: " + novZapis.getAvtor());
 				ZapisDAO.getInstance().shraniZapis(novZapis);

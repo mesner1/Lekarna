@@ -31,14 +31,13 @@ public class Zapis_dopolniloDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				conn.createStatement().execute("create table zapis_dopolnilo (id int auto_increment, int dopolnilo_id, int zapis_id, kolicina int, primary key (id))");
+				conn.createStatement().execute("create table zapis_dopolnilo (id int auto_increment, dopolnilo_id int, zapis_id int, kolicina int, primary key (id))");
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				conn.close();
 			}
 		}
-		
 		
 		public Zapis_dopolnilo najdiZapis_dopolnilo(int id) throws Exception {
 			DataSource ds=(DataSource)new InitialContext().lookup("java:jboss/datasources/lekarna");	
