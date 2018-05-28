@@ -21,7 +21,7 @@
 			#{zrno.pacientIme}
 			
 			
-			<h:dataTable value="#{zrno.izbraniZapisiLekarnar(zrno.pacientIme)}"
+			<h:dataTable value="#{zrno.vsiIzdani(zrno.pacientIme)}"
 				var="c" styleClass="pregled">
 				<h:column>
 					<b>Zapis #{c.id}</b>
@@ -31,14 +31,11 @@
 					<h:outputText value="#{c.avtor}" />
 					<h:outputText value="#{c.dopolnila}" />
 					<h:outputText value="#{c.tip}" />
-					<h:commandButton value="Označi kot izdano"
-						actionListener="#{zrno.izdaj(request.remoteUser, c.id, c.dopolnila)}"
-						action="pregledZapisovLekarnar.xhtml" />
 				</h:column>
 
-			<a><h:link value="Nazaj" outcome="lekarnar.xhtml" /></a>
+
 			</h:dataTable>
-			<a><h:link value="Preglej vse izdane zapise" outcome="vsiIzdani.xhtml" /></a>
+			<a><h:link value="Nazaj" outcome="pregledZapisovLekarnar.xhtml" /></a>
 			<br></br>
 
 
