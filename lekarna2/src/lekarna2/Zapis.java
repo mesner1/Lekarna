@@ -10,6 +10,7 @@ public class Zapis {
 	private int kartoteka_id;
 	private String tip;
 	private String avtor;
+	private int izdan;
 	private ArrayList<Dopolnilo> dopolnila;
 
 	public Zapis() {
@@ -32,6 +33,15 @@ public class Zapis {
 		this.avtor = avtor;
 	}
 
+	public Zapis(Date cas, int kartoteka_id, String tip, String avtor, int izdan, ArrayList<Dopolnilo> dopolnila) {
+		this.cas = cas;
+		this.kartoteka_id = kartoteka_id;
+		this.tip = tip;
+		this.avtor = avtor;
+		this.izdan = izdan;
+		this.dopolnila = dopolnila;
+	}
+	
 	public Zapis(Date cas, int kartoteka_id, String tip, String avtor, ArrayList<Dopolnilo> dopolnila) {
 		this.cas = cas;
 		this.kartoteka_id = kartoteka_id;
@@ -39,6 +49,15 @@ public class Zapis {
 		this.avtor = avtor;
 		this.dopolnila = dopolnila;
 	}
+	
+	
+	public Zapis(Date cas, int kartoteka_id, String tip, ArrayList<Dopolnilo> dopolnila) {
+		this.cas = cas;
+		this.kartoteka_id = kartoteka_id;
+		this.tip = tip;
+		this.dopolnila = dopolnila;
+	}
+	
 	
 	public Zapis(int kartoteka_id) {
 		this.kartoteka_id = kartoteka_id;
@@ -123,6 +142,18 @@ public class Zapis {
 	
 	
 	
+
+
+
+	public int getIzdan() {
+		return izdan;
+	}
+
+
+
+	public void setIzdan(int izdan) {
+		this.izdan = izdan;
+	}
 
 
 

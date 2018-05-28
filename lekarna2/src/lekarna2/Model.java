@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
@@ -35,9 +36,7 @@ public class Model {
 	public ArrayList<Zapis> izbraniZapisi(String ime) throws Exception {
 		String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
 		int idKartoteke = Integer.parseInt(idPacienta);
-		System.out.println("imeeee je " + idKartoteke);
 		izbraniZapisi = (ArrayList<Zapis>) ZapisDAO.getInstance().vrniVse(idKartoteke);
-		System.out.println("dolzina: " + izbraniZapisi.size());
 		return izbraniZapisi;
 
 	}
@@ -45,17 +44,23 @@ public class Model {
 	public ArrayList<Zapis> izbraniZapisiLekarnar(String ime) throws Exception {
 		String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
 		int idKartoteke = Integer.parseInt(idPacienta);
-		izbraniZapisi = (ArrayList<Zapis>) ZapisDAO.getInstance().vrniVse(idKartoteke);
-		System.out.println("dolzina: " + izbraniZapisi.size());
+		izbraniZapisi = (ArrayList<Zapis>) ZapisDAO.getInstance().vrniVseNeizdane(idKartoteke);
+		System.out.println("dolzinaLekarnar: " + izbraniZapisi.size());
+		return izbraniZapisi;
+
+	}
+	
+	public ArrayList<Zapis> vsiIzdani(String ime) throws Exception {
+		String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
+		int idKartoteke = Integer.parseInt(idPacienta);
+		izbraniZapisi = (ArrayList<Zapis>) ZapisDAO.getInstance().vrniVseIzdane(idKartoteke);
+		System.out.println("dolzinaLekarnar: " + izbraniZapisi.size());
 		return izbraniZapisi;
 
 	}
 
 	public void izdaj(String avtor, int idZapis, ArrayList<Dopolnilo> dopolnila) throws Exception {
 		try {
-			System.out.println("dOLŽina doPOlnIL: " + dopolnila.size());
-			System.out.println("dolžina izbranih: " + izbranaDopolnila.size());
-			System.out.println("naše ime je: " + this.getPacientIme());
 			String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
 			int idKartoteke = Integer.parseInt(idPacienta);
 			novZapis.setKartoteka_id(idKartoteke);
@@ -64,6 +69,7 @@ public class Model {
 			LocalDateTime now = LocalDateTime.now();
 			Date cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
 			System.out.println("èas:" + cas);
+
 			novZapis.setCas(cas);
 			novZapis.setTip("izdaja");
 			novZapis.setAvtor(avtor);
@@ -75,6 +81,10 @@ public class Model {
 			novZapisDopolnila.setZapis_id(novZapis.getId());
 
 
+			System.out.println("ID ZAPISA: " + idZapis);
+			ZapisDAO.getInstance().posodobiIzdano(idZapis);
+			
+			
 			for (int i = 0; i < dopolnila.size(); i++) {
 				izbranaDopolnila.add(dopolnila.get(i).getNaziv());
 			}
@@ -86,7 +96,6 @@ public class Model {
 				Dopolnilo izbrano = DopolniloDAO.getInstance().najdiDopolnilo(izbranaDopolnila.get(i));
 				System.out.println("poglejmo izbranoooo " + izbrano.getId());
 				Zapis_dopolnilo najden = Zapis_dopolniloDAO.getInstance().najdiDoloceno(izbrano.getId(), idZapis);
-				System.out.println("HAHAHAH: " + najden.getId());
 				novZapisDopolnila.setDopolnilo_id(izbrano.getId());
 				novZapisDopolnila.setKolicina(najden.getKolicina());
 				Zapis_dopolniloDAO.getInstance().shraniZapis_dopolnilo(novZapisDopolnila);
@@ -96,6 +105,71 @@ public class Model {
 			// novZapis.setDopolnila(izbranaDopolnila);
 			novZapis = new Zapis();
 			novZapisDopolnila = new Zapis_dopolnilo();
+			izbranaDopolnila = new ArrayList<String>();
+			
+			
+			
+			
+			
+			//IZRAÈUN ZAUŽITJA
+		
+			idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
+			idKartoteke = Integer.parseInt(idPacienta);
+			novZapis.setKartoteka_id(idKartoteke);
+			System.out.println(novZapis.getKartoteka_id());
+			int najdaljse = dopolnila.get(0).getTrajanje();
+			for(int i = 0; i<dopolnila.size(); i++) {
+				if(dopolnila.get(i).getTrajanje() > najdaljse) {
+					najdaljse = dopolnila.get(i).getTrajanje();
+				}
+			}
+			dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+			now = LocalDateTime.now();
+			cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+			
+			Calendar c = Calendar.getInstance();
+	        c.setTime(cas);
+	        c.add(Calendar.DATE, najdaljse);
+			
+	        Date koncniCas = c.getTime();
+	        
+			System.out.println("èas:" + koncniCas);
+
+			novZapis.setCas(koncniCas);
+			novZapis.setTip("zadnje_zaužitje");
+
+			ZapisDAO.getInstance().shraniZapis(novZapis);
+
+			System.out.println("ID zapisa: " + novZapis.getId());
+
+			novZapisDopolnila.setZapis_id(novZapis.getId());
+
+
+			System.out.println("ID ZAPISA: " + idZapis);
+			ZapisDAO.getInstance().posodobiIzdano(idZapis);
+			
+			
+			for (int i = 0; i < dopolnila.size(); i++) {
+				izbranaDopolnila.add(dopolnila.get(i).getNaziv());
+			}
+
+			System.out.println("dolžina izbranih2: " + izbranaDopolnila.size());
+			System.out.println("PA TO:" + novZapisDopolnila.getZapis_id());
+
+			for (int i = 0; i < izbranaDopolnila.size(); i++) {
+				Dopolnilo izbrano = DopolniloDAO.getInstance().najdiDopolnilo(izbranaDopolnila.get(i));
+				Zapis_dopolnilo najden = Zapis_dopolniloDAO.getInstance().najdiDoloceno(izbrano.getId(), idZapis);
+				novZapisDopolnila.setDopolnilo_id(izbrano.getId());
+				novZapisDopolnila.setKolicina(najden.getKolicina());
+				Zapis_dopolniloDAO.getInstance().shraniZapis_dopolnilo(novZapisDopolnila);
+
+			}
+
+			// novZapis.setDopolnila(izbranaDopolnila);
+			novZapis = new Zapis();
+			novZapisDopolnila = new Zapis_dopolnilo();
+			izbranaDopolnila = new ArrayList<String>();			
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -219,6 +293,7 @@ public class Model {
 			String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
 			int idKartoteke = Integer.parseInt(idPacienta);
 			novZapis.setKartoteka_id(idKartoteke);
+			novZapis.setIzdan(0);
 			System.out.println(novZapis.getKartoteka_id());
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 			LocalDateTime now = LocalDateTime.now();
