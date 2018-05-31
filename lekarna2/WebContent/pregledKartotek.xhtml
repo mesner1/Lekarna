@@ -19,8 +19,11 @@
 			</f:metadata>
 
 			<font size="6">Pacient: #{zrno.pacientIme}</font>
+			<br></br>
 
 			<br></br>
+			<h:commandButton value="Nov predpis" action="novPredpis.xhtml" />
+			<h:commandButton value="Nasvet" action="novNasvet.xhtml" />
 			<br></br>
 
 			<h:dataTable value="#{zrno.izbraniZapisi(zrno.pacientIme)}" var="c"
@@ -55,7 +58,7 @@
 			</h:dataTable>
 
 			<br></br>
-			<h:commandButton value="Nov predpis" action="novPredpis.xhtml" />
+			<a> <h:link value="Domov" outcome="domov.xhtml" /></a>
 
 		</h:form>
 	</f:view>
