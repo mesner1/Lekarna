@@ -39,7 +39,7 @@ public class ZapisDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				conn.createStatement().execute("create table zapis (id int auto_increment not null, cas timestamp not null, kartoteka_id integer not null, tip_id integer not null, avtor varchar(255), izdan integer, primary key (id))");
+				conn.createStatement().execute("create table zapis (id int auto_increment not null, cas date not null, kartoteka_id integer not null, tip_id integer not null, avtor varchar(255), izdan integer, primary key (id))");
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -147,7 +147,7 @@ public class ZapisDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE kartoteka_id=?",PreparedStatement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE kartoteka_id=? ORDER BY cas DESC",PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, id);
 				ResultSet rs = ps.executeQuery();
 				while (rs.next()) {

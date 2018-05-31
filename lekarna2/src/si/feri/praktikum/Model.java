@@ -12,14 +12,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import si.feri.dao.DopolniloDAO;
-import si.feri.dao.KartotekaDAO;
-import si.feri.dao.ZapisDAO;
-import si.feri.dao.Zapis_dopolniloDAO;
-import si.feri.vao.Dopolnilo;
-import si.feri.vao.Kartoteka;
-import si.feri.vao.Zapis;
-import si.feri.vao.Zapis_dopolnilo;
+import si.feri.dao.*;
+import si.feri.vao.*;
 
 @ManagedBean(name = "zrno")
 @SessionScoped
@@ -27,6 +21,7 @@ public class Model {
 
 	private Dopolnilo novoDopolnilo = new Dopolnilo();
 	private Zapis novZapis = new Zapis();
+	private Nasvet novNasvet = new Nasvet();
 	private Zapis_dopolnilo novZapisDopolnila = new Zapis_dopolnilo();
 	private ArrayList<Kartoteka> kartoteke = new ArrayList<Kartoteka>();
 	private ArrayList<Dopolnilo> dopolnila = new ArrayList<Dopolnilo>();
@@ -34,7 +29,7 @@ public class Model {
 	private ArrayList<String> izbranaDopolnila = new ArrayList<String>();
 	private ArrayList<Zapis> izbraniZapisi = new ArrayList<Zapis>();
 	private int izbranID;
-
+	
 	private int kolicina;
 	private ArrayList<Integer> kolicine = new ArrayList<Integer>();
 
@@ -44,6 +39,16 @@ public class Model {
 		System.out.println("POGLEJMO ZDAJ: " + kolicine);
 	}
 
+	public void dodajNasvet(String avtor, String pacient) throws Exception {
+		novNasvet.setAvtor(avtor);
+		System.out.println("AVTOR NASVETA: " + novNasvet.getAvtor());
+		String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
+		int idKartoteke = Integer.parseInt(idPacienta);
+		novNasvet.setKartoteka_id(idKartoteke);
+		NasvetDAO.getInstance().shraniNasvet(novNasvet);
+		novNasvet = new Nasvet();
+	}
+	
 	public ArrayList<Zapis> izbraniZapisi(String ime) throws Exception {
 		String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
 		int idKartoteke = Integer.parseInt(idPacienta);
@@ -274,6 +279,15 @@ public class Model {
 
 	public int getKolicina() {
 		return kolicina;
+	}
+
+	
+	public Nasvet getNovNasvet() {
+		return novNasvet;
+	}
+
+	public void setNovNasvet(Nasvet novNasvet) {
+		this.novNasvet = novNasvet;
 	}
 
 	public void setKolicina(int kolicina) {
