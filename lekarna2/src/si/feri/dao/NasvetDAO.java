@@ -66,14 +66,12 @@ public class NasvetDAO {
 		return ret;
 	}
 
-	public void shraniNasvet(Nasvet o) throws Exception {
+	public int shraniNasvet(Nasvet o) throws Exception {
 		DataSource ds = (DataSource) new InitialContext().lookup("java:jboss/datasources/lekarna");
 		System.out.println("DAO: shranjujem nasvet " + o);
 		Connection conn = null;
 		try {
 			conn = ds.getConnection();
-			if (o == null)
-				return;
 			PreparedStatement ps;
 			if(o.getZapis_id()==0) {
 			ps = conn.prepareStatement(
@@ -106,6 +104,8 @@ public class NasvetDAO {
 		} finally {
 			conn.close();
 		}
+		
+		return o.getId();
 	}
 
 	public List<Nasvet> vrniVse(int id) throws Exception {
@@ -114,12 +114,13 @@ public class NasvetDAO {
 		List<Nasvet> ret = new ArrayList<Nasvet>();
 		Connection conn = null;
 		try {
-			conn = ds.getConnection();
-
-			ResultSet rs = conn.createStatement().executeQuery("select * from nasvet");
+			conn=ds.getConnection();
+			PreparedStatement ps = conn.prepareStatement("select * from nasvet WHERE kartoteka_id=?");
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				Nasvet o = new Nasvet(id, rs.getString("nasvet"), rs.getString("avtor"), rs.getString("hash"),
-						rs.getInt("zapis_id"), rs.getInt("kartoteka_id"));
+				Nasvet o = new Nasvet(rs.getInt("id"), rs.getString("nasvet"), rs.getString("avtor"), rs.getString("hash"),
+						rs.getInt("zapis_id"), id);
 				ret.add(o);
 			}
 			rs.close();

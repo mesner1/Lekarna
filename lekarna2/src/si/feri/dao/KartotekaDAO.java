@@ -34,7 +34,7 @@ public class KartotekaDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				conn.createStatement().execute("create table if not exists  kartoteka (id int auto_increment, ime varchar(255), priimek varchar(255), primary key (id))");
+				conn.createStatement().execute("create table kartoteka (id int auto_increment, ime varchar(255), priimek varchar(255), primary key (id))");
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {

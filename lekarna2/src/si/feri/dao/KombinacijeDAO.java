@@ -46,7 +46,7 @@ public class KombinacijeDAO {
 		
 		public Kombinacije najdiKombinacije(int id) throws Exception {
 			DataSource ds=(DataSource)new InitialContext().lookup("java:jboss/datasources/lekarna");	
-			System.out.println("DAO: išèem "+id);
+			System.out.println("DAO: iÅ¡Ã¨em "+id);
 			Kombinacije ret = null;
 			Connection conn=null;
 			try {
@@ -69,7 +69,7 @@ public class KombinacijeDAO {
 		
 		public Kombinacije najdiKombinacije(String prvo_zdravilo, String drugo_zdravilo) throws Exception {
 			DataSource ds=(DataSource)new InitialContext().lookup("java:jboss/datasources/lekarna");	
-			System.out.println("DAO: išèem "+prvo_zdravilo+", "+drugo_zdravilo);
+			System.out.println("DAO: iÅ¡Ã¨em "+prvo_zdravilo+", "+drugo_zdravilo);
 			Kombinacije ret = null;
 			Connection conn=null;
 			try {
@@ -118,7 +118,7 @@ public class KombinacijeDAO {
 		
 		public List<Kombinacije> vrniVse() throws Exception {
 			DataSource ds=(DataSource)new InitialContext().lookup("java:jboss/datasources/lekarna");	
-			System.out.println(("DAO: vraèam vse kombinacije"));
+			System.out.println(("DAO: vraÃ¨am vse kombinacije"));
 			List<Kombinacije> ret = new ArrayList<Kombinacije>();
 			Connection conn=null;
 			try {

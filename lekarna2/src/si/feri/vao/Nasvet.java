@@ -1,5 +1,12 @@
 package si.feri.vao;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+
+
 public class Nasvet {
 
 	private int id;
@@ -9,11 +16,9 @@ public class Nasvet {
 	private int zapis_id;
 	private int kartoteka_id;
 
-	
 	public Nasvet() {
 	}
 
-	
 	public Nasvet(int id, String nasvet, String avtor, String hash, int zapis_id, int kartoteka_id) {
 		this.id = id;
 		this.nasvet = nasvet;
@@ -22,7 +27,6 @@ public class Nasvet {
 		this.zapis_id = zapis_id;
 	}
 
-	
 	public Nasvet(String nasvet, String avtor, String hash, int zapis_id, int kartoteka_id) {
 		this.nasvet = nasvet;
 		this.avtor = avtor;
@@ -69,13 +73,10 @@ public class Nasvet {
 	public void setZapis_id(int zapis_id) {
 		this.zapis_id = zapis_id;
 	}
-	
-	
 
 	public int getKartoteka_id() {
 		return kartoteka_id;
 	}
-
 
 	public void setKartoteka_id(int kartoteka_id) {
 		this.kartoteka_id = kartoteka_id;
