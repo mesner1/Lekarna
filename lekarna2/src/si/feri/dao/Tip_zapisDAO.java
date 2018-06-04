@@ -34,7 +34,7 @@ public class Tip_zapisDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				conn.createStatement().execute("create table tip_zapis (id int auto_increment, naziv varchar(255), primary key (id))");
+				conn.createStatement().execute("create table if not exists  tip_zapis (id int auto_increment, naziv varchar(255), primary key (id))");
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {

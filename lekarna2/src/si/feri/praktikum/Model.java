@@ -1,3 +1,5 @@
+package si.feri.praktikum;
+
 
 
 import java.text.SimpleDateFormat;
@@ -13,12 +15,28 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import blockchain.Block;
+import si.feri.Email.EmailPoslji;
+import si.feri.dao.DopolniloDAO;
+import si.feri.dao.KartotekaDAO;
+import si.feri.dao.KombinacijeDAO;
+import si.feri.dao.NasvetDAO;
+import si.feri.dao.ZapisDAO;
+import si.feri.dao.Zapis_dopolniloDAO;
+import si.feri.vao.Dopolnilo;
+import si.feri.vao.Kartoteka;
+import si.feri.vao.Kombinacije;
+import si.feri.vao.Nasvet;
+import si.feri.vao.Zapis;
+import si.feri.vao.Zapis_dopolnilo;
+
 
 
 @ManagedBean(name = "zrno")
 @SessionScoped
 public class Model {
-
+	
+	private Kartoteka izbranaKartoteka = new Kartoteka();
 	private Kombinacije noveKombinacije = new Kombinacije();
 	private Dopolnilo novoDopolnilo = new Dopolnilo();
 	private Zapis novZapis = new Zapis();
@@ -148,7 +166,7 @@ public class Model {
 //			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 //			LocalDateTime now = LocalDateTime.now();
 //			Date cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-//			System.out.println("√®as:" + cas);
+//			System.out.println("Ëas:" + cas);
 			java.util.Date utilDate = new java.util.Date();
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(utilDate);
@@ -160,7 +178,19 @@ public class Model {
 			ZapisDAO.getInstance().shraniZapis(novZapis);
 
 			System.out.println("ID zapisa: " + novZapis.getId());
-
+	//////////////////POSILJANJE OBVESTILA////////////////
+			izbranaKartoteka=KartotekaDAO.getInstance().najdiKartoteko(idKartoteke);
+			String email= izbranaKartoteka.getEmail();
+			String ime=izbranaKartoteka.getIme();
+			String priimek=izbranaKartoteka.getPriimek();
+			EmailPoslji e = new EmailPoslji();
+			e.poslji(avtor, email, ime, priimek);
+			
+			
+			
+			
+			
+			//////////////////////////////////////////////////////
 			novZapisDopolnila.setZapis_id(novZapis.getId());
 
 			System.out.println("ID ZAPISA: " + idZapis);
@@ -170,7 +200,7 @@ public class Model {
 				izbranaDopolnila.add(dopolnila.get(i).getNaziv());
 			}
 
-			System.out.println("dol≈æina izbranih2: " + izbranaDopolnila.size());
+			System.out.println("dolûina izbranih2: " + izbranaDopolnila.size());
 			System.out.println("PA TO:" + novZapisDopolnila.getZapis_id());
 
 			for (int i = 0; i < izbranaDopolnila.size(); i++) {
@@ -188,7 +218,7 @@ public class Model {
 			novZapisDopolnila = new Zapis_dopolnilo();
 			izbranaDopolnila = new ArrayList<String>();
 
-			// IZRA√àUN ZAU≈ΩITJA
+			// IZRA»UN ZAUéITJA
 
 			idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
 			idKartoteke = Integer.parseInt(idPacienta);
@@ -207,7 +237,7 @@ public class Model {
 			new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal.getTime());
 
 			novZapis.setCas(cal);
-			novZapis.setTip("zadnje_zau≈æitje");
+			novZapis.setTip("zadnje_zauûitje");
 
 			ZapisDAO.getInstance().shraniZapis(novZapis);
 
@@ -222,7 +252,7 @@ public class Model {
 				izbranaDopolnila.add(dopolnila.get(i).getNaziv());
 			}
 
-			System.out.println("dol≈æina izbranih2: " + izbranaDopolnila.size());
+			System.out.println("dolûina izbranih2: " + izbranaDopolnila.size());
 			System.out.println("PA TO:" + novZapisDopolnila.getZapis_id());
 
 			for (int i = 0; i < izbranaDopolnila.size(); i++) {
@@ -382,7 +412,7 @@ public class Model {
 		try {
 
 			System.out.println("kolicine:" + kolicine.size());
-			System.out.println("na≈°e ime je: " + this.getPacientIme());
+			System.out.println("naöe ime je: " + this.getPacientIme());
 			String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
 			int idKartoteke = Integer.parseInt(idPacienta);
 			novZapis.setKartoteka_id(idKartoteke);
@@ -446,7 +476,7 @@ public class Model {
 	public void novaIzdajaLekarnar(String avtor) {
 		try {
 			System.out.println("kolicine:" + kolicine.size());
-			System.out.println("na≈°e ime je: " + this.getPacientIme());
+			System.out.println("naöe ime je: " + this.getPacientIme());
 			String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
 			int idKartoteke = Integer.parseInt(idPacienta);
 			novZapis.setKartoteka_id(idKartoteke);
@@ -455,7 +485,7 @@ public class Model {
 //			LocalDateTime now = LocalDateTime.now();
 //
 //			Date cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-//			System.out.println("√®as:" + cas);
+//			System.out.println("Ëas:" + cas);
 			java.util.Date utilDate = new java.util.Date();
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(utilDate);

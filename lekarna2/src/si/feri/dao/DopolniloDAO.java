@@ -35,7 +35,7 @@ public class DopolniloDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				conn.createStatement().execute("create table dopolnilo (id int auto_increment, naziv varchar(255), naRecept integer, trajanje integer, opis varchar(255), primary key (id))");
+				conn.createStatement().execute("create table if not exists dopolnilo (id int auto_increment, naziv varchar(255), naRecept integer, trajanje integer, opis varchar(255), primary key (id))");
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {

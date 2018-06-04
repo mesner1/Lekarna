@@ -5,19 +5,22 @@ public class Kartoteka {
 	private int id;
 	private String ime;
 	private String priimek;
+	private String email;
 	
 	public Kartoteka() {
 	}
 	
-	public Kartoteka(int id, String ime, String priimek) {
+	public Kartoteka(int id, String ime, String priimek, String email) {
 		this.id = id;
 		this.ime = ime;
 		this.priimek = priimek;
+		this.email=email;
 	}
 	
-	public Kartoteka(String ime, String priimek) {
+	public Kartoteka(String ime, String priimek, String email) {
 		this.ime = ime;
 		this.priimek = priimek;
+		this.email=email;
 	}
 	
 	public int getId() {
@@ -39,9 +42,18 @@ public class Kartoteka {
 		this.priimek = priimek;
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Override
 	public String toString() {
 		return id + " - " + ime + " " + priimek;
 	}
+
 
 }

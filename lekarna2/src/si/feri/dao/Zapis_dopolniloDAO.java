@@ -34,7 +34,7 @@ public class Zapis_dopolniloDAO {
 		try {
 			conn = ds.getConnection();
 			conn.createStatement().execute(
-					"create table zapis_dopolnilo (id int auto_increment, dopolnilo_id int, zapis_id int, kolicina int, primary key (id))");
+					"create table if not exists zapis_dopolnilo (id int auto_increment, dopolnilo_id int, zapis_id int, kolicina int, primary key (id))");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

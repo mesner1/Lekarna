@@ -34,7 +34,7 @@ public class KartotekaDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				conn.createStatement().execute("create table kartoteka (id int auto_increment, ime varchar(255), priimek varchar(255), primary key (id))");
+				conn.createStatement().execute("create table if not exists  kartoteka (id int auto_increment, ime varchar(255), priimek varchar(255), email varchar(255) not null, primary key (id))");
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -45,7 +45,7 @@ public class KartotekaDAO {
 		
 		public Kartoteka najdiKartoteko(int id) throws Exception {
 			DataSource ds=(DataSource)new InitialContext().lookup("java:jboss/datasources/lekarna");	
-			System.out.println("DAO: išèem "+id);
+			System.out.println("DAO: iÅ¡Ã¨em "+id);
 			Kartoteka ret = null;
 			Connection conn=null;
 			try {
@@ -54,7 +54,7 @@ public class KartotekaDAO {
 				ps.setInt(1, id);
 				ResultSet rs = ps.executeQuery();
 				while (rs.next()) {
-					ret = new Kartoteka(id, rs.getString("ime"), rs.getString("priimek"));
+					ret = new Kartoteka(id, rs.getString("ime"), rs.getString("priimek"), rs.getString("email"));
 					break;
 				}
 			} catch (Exception e) {
@@ -64,6 +64,7 @@ public class KartotekaDAO {
 			}
 			return ret;
 		}
+	
 		
 		
 		public void shraniKartoteko(Kartoteka o) throws Exception {
@@ -91,7 +92,7 @@ public class KartotekaDAO {
 		
 		public List<Kartoteka> vrniVse() throws Exception {
 			DataSource ds=(DataSource)new InitialContext().lookup("java:jboss/datasources/lekarna");	
-			System.out.println(("DAO: vraèam vse èlane"));
+			System.out.println(("DAO: vraÃ¨am vse Ã¨lane"));
 			List<Kartoteka> ret = new ArrayList<Kartoteka>();
 			Connection conn=null;
 			try {
@@ -99,7 +100,7 @@ public class KartotekaDAO {
 
 				ResultSet rs=conn.createStatement().executeQuery("select * from kartoteka");
 				while (rs.next()) {
-					Kartoteka o = new Kartoteka(rs.getString("ime"), rs.getString("priimek"));
+					Kartoteka o = new Kartoteka(rs.getString("ime"), rs.getString("priimek"), rs.getString("email"));
 					o.setId(rs.getInt("id"));
 					ret.add(o);
 				}
