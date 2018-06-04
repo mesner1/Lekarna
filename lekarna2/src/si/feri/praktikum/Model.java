@@ -1,5 +1,6 @@
 package si.feri.praktikum;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -19,6 +20,7 @@ import si.feri.vao.*;
 @SessionScoped
 public class Model {
 
+	private Kombinacije noveKombinacije = new Kombinacije();
 	private Dopolnilo novoDopolnilo = new Dopolnilo();
 	private Zapis novZapis = new Zapis();
 	private Nasvet novNasvet = new Nasvet();
@@ -28,6 +30,7 @@ public class Model {
 	private ArrayList<Dopolnilo> dopolnilaBrezRecepta = new ArrayList<Dopolnilo>();
 	private ArrayList<String> izbranaDopolnila = new ArrayList<String>();
 	private ArrayList<Zapis> izbraniZapisi = new ArrayList<Zapis>();
+	private ArrayList<Kombinacije> izbraneKombinacije = new ArrayList<Kombinacije>();
 	private int izbranID;
 	
 	private int kolicina;
@@ -90,12 +93,15 @@ public class Model {
 			int idKartoteke = Integer.parseInt(idPacienta);
 			novZapis.setKartoteka_id(idKartoteke);
 			System.out.println(novZapis.getKartoteka_id());
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-			LocalDateTime now = LocalDateTime.now();
-			Date cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-			System.out.println("èas:" + cas);
-
-			novZapis.setCas(cas);
+//			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+//			LocalDateTime now = LocalDateTime.now();
+//			Date cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+//			System.out.println("èas:" + cas);
+			java.util.Date utilDate = new java.util.Date();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(utilDate);
+			new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(cal.getTime());
+			novZapis.setCas(cal);
 			novZapis.setTip("izdaja");
 			novZapis.setAvtor(avtor);
 			System.out.println("avtor je: " + novZapis.getAvtor());
@@ -142,19 +148,23 @@ public class Model {
 					najdaljse = dopolnila.get(i).getTrajanje();
 				}
 			}
-			dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-			now = LocalDateTime.now();
-			cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+//			dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+//			now = LocalDateTime.now();
+//			cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+//
+//			Calendar c = Calendar.getInstance();
+//			c.setTime(cas);
+//			c.add(Calendar.DATE, najdaljse);
+//
+//			Date koncniCas = c.getTime();
+//
+//			System.out.println("èas:" + koncniCas);
+			java.util.Date utilDate2 = new java.util.Date();
+			cal.setTime(utilDate2);
+			cal.add(Calendar.HOUR, najdaljse);
+			new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal.getTime());
 
-			Calendar c = Calendar.getInstance();
-			c.setTime(cas);
-			c.add(Calendar.DATE, najdaljse);
-
-			Date koncniCas = c.getTime();
-
-			System.out.println("èas:" + koncniCas);
-
-			novZapis.setCas(koncniCas);
+			novZapis.setCas(cal);
 			novZapis.setTip("zadnje_zaužitje");
 
 			ZapisDAO.getInstance().shraniZapis(novZapis);
@@ -306,7 +316,15 @@ public class Model {
 	public void setKolicine(ArrayList<Integer> kolicine) {
 		this.kolicine = kolicine;
 	}
-
+	public void dodajKombinacijo() {
+		try {
+			if (KombinacijeDAO.getInstance().najdiKombinacije(noveKombinacije.getId()) == null) {
+				KombinacijeDAO.getInstance().shraniKombinacije(noveKombinacije);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void dodajDopolnilo() {
 		try {
 			if (DopolniloDAO.getInstance().najdiDopolnilo(novoDopolnilo.getId()) == null) {
@@ -327,12 +345,16 @@ public class Model {
 			novZapis.setKartoteka_id(idKartoteke);
 			novZapis.setIzdan(0);
 			System.out.println(novZapis.getKartoteka_id());
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-			LocalDateTime now = LocalDateTime.now();
-
-			Date cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-			System.out.println("èas:" + cas);
-			novZapis.setCas(cas);
+//			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+//			LocalDateTime now = LocalDateTime.now();
+//
+//			Date cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+//			System.out.println("èas:" + cas);
+			java.util.Date utilDate = new java.util.Date();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(utilDate);
+			new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal.getTime());
+			novZapis.setCas(cal);
 			novZapis.setTip("predpis");
 			novZapis.setAvtor(avtor);
 			System.out.println("avtor je: " + novZapis.getAvtor());
@@ -369,12 +391,16 @@ public class Model {
 			int idKartoteke = Integer.parseInt(idPacienta);
 			novZapis.setKartoteka_id(idKartoteke);
 			//novZapis.setIzdan(1);
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-			LocalDateTime now = LocalDateTime.now();
-
-			Date cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-			System.out.println("èas:" + cas);
-			novZapis.setCas(cas);
+//			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+//			LocalDateTime now = LocalDateTime.now();
+//
+//			Date cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+//			System.out.println("èas:" + cas);
+			java.util.Date utilDate = new java.util.Date();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(utilDate);
+			new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal.getTime());
+			novZapis.setCas(cal);
 			novZapis.setTip("izdaja");
 			novZapis.setAvtor(avtor);
 			System.out.println("avtor je: " + novZapis.getAvtor());
@@ -414,6 +440,22 @@ public class Model {
 
 	public void odjava() {
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+	}
+
+	public Kombinacije getNoveKombinacije() {
+		return noveKombinacije;
+	}
+
+	public void setNoveKombinacije(Kombinacije noveKombinacije) {
+		this.noveKombinacije = noveKombinacije;
+	}
+
+	public ArrayList<Kombinacije> getIzbraneKombinacije() {
+		return izbraneKombinacije;
+	}
+
+	public void setIzbraneKombinacije(ArrayList<Kombinacije> izbraneKombinacije) {
+		this.izbraneKombinacije = izbraneKombinacije;
 	}
 
 }
