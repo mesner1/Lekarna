@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -39,7 +40,7 @@ public class ZapisDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				conn.createStatement().execute("create table zapis (id int auto_increment not null, cas date not null, kartoteka_id integer not null, tip_id integer not null, avtor varchar(255), izdan integer, primary key (id))");
+				conn.createStatement().execute("create table if not exists zapis (id int auto_increment not null, cas timestamp not null, kartoteka_id integer not null, tip_id integer not null, avtor varchar(255), izdan integer, primary key (id))");
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -48,6 +49,7 @@ public class ZapisDAO {
 		}
 		
 		
+
 		public Zapis najdiZapis(int id) throws Exception {
 			DataSource ds=(DataSource)new InitialContext().lookup("java:jboss/datasources/lekarna");	
 			System.out.println("DAO: išèem "+id);
@@ -65,7 +67,9 @@ public class ZapisDAO {
 //					ResultSet rs2 = ps2.executeQuery();
 					tip = Tip_zapisDAO.getInstance().najdiTip(rs.getInt("tip_id"));
 					//tip = rs2.getString("naziv");
-					ret = new Zapis(id, rs.getDate("cas"), rs.getInt("kartoteka_id"), tip.getNaziv(), rs.getString("avtor"));
+					GregorianCalendar cas = new GregorianCalendar();
+					cas.setTimeInMillis(rs.getTimestamp("cas").getTime());
+					ret = new Zapis(id, cas, rs.getInt("kartoteka_id"), tip.getNaziv(), rs.getString("avtor"));
 					break;
 				}
 			} catch (Exception e) {
@@ -116,10 +120,10 @@ public class ZapisDAO {
 				if(o==null) return;
 					PreparedStatement ps = conn.prepareStatement("insert into zapis(cas , kartoteka_id, tip_id, avtor, izdan) values (?,?,?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
 					System.out.println("prenesen cas: " + o.getCas());
-					Date novDatumM = o.getCas();
-					java.sql.Date novDatumMsql = new java.sql.Date(novDatumM.getTime());
-					System.out.println("NOV MYSQL CAS: " + novDatumMsql);
-					ps.setDate(1, novDatumMsql);
+//					Date novDatumM = o.getCas();
+//					java.sql.Date novDatumMsql = new java.sql.Date(novDatumM.getTime());
+//					System.out.println("NOV MYSQL CAS: " + novDatumMsql);
+					ps.setTimestamp(1, new Timestamp(o.getCas().getTimeInMillis()));
 					ps.setInt(2, o.getKartoteka_id());				
 					tip = Tip_zapisDAO.getInstance().najdiTip(o.getTip());
 					ps.setInt(3,  tip.getId());
@@ -154,8 +158,11 @@ public class ZapisDAO {
 					ArrayList<Dopolnilo> dopolnila = new ArrayList<Dopolnilo>();
 					
 					tip = Tip_zapisDAO.getInstance().najdiTip(rs.getInt("tip_id"));
-					//tip = rs2.getString("naziv");					
-					Zapis o = new Zapis(rs.getDate("cas"), rs.getInt("kartoteka_id"), tip.getNaziv(), rs.getString("avtor"), dopolnila);
+					//tip = rs2.getString("naziv");	
+					GregorianCalendar cas = new GregorianCalendar();
+					cas.setTimeInMillis((rs.getTimestamp("cas").getTime()));
+					Zapis o = new Zapis(cas, rs.getInt("kartoteka_id"), tip.getNaziv(), rs.getString("avtor"), dopolnila);
+					o.getCas().setTimeInMillis(rs.getTimestamp("cas").getTime());
 					o.setId(rs.getInt("id"));
 					
 					System.out.println("vmesna1: " + o.getAvtor());
@@ -209,8 +216,11 @@ public class ZapisDAO {
 					ArrayList<Dopolnilo> dopolnila = new ArrayList<Dopolnilo>();
 					
 					tip = Tip_zapisDAO.getInstance().najdiTip(rs.getInt("tip_id"));
-					//tip = rs2.getString("naziv");					
-					Zapis o = new Zapis(rs.getDate("cas"), rs.getInt("kartoteka_id"), tip.getNaziv(), rs.getString("avtor"), dopolnila);
+					//tip = rs2.getString("naziv");
+					GregorianCalendar cas = new GregorianCalendar();
+					cas.setTimeInMillis(rs.getTimestamp("cas").getTime());
+					Zapis o = new Zapis(cas, rs.getInt("kartoteka_id"), tip.getNaziv(), rs.getString("avtor"), dopolnila);
+					o.getCas().setTimeInMillis(rs.getTimestamp("cas").getTime());
 					o.setId(rs.getInt("id"));
 					
 					System.out.println("vmesna1: " + o.getAvtor());
@@ -264,8 +274,11 @@ public class ZapisDAO {
 					ArrayList<Dopolnilo> dopolnila = new ArrayList<Dopolnilo>();
 					
 					tip = Tip_zapisDAO.getInstance().najdiTip(rs.getInt("tip_id"));
-					//tip = rs2.getString("naziv");					
-					Zapis o = new Zapis(rs.getDate("cas"), rs.getInt("kartoteka_id"), tip.getNaziv(), rs.getString("avtor"), dopolnila);
+					//tip = rs2.getString("naziv");			
+					GregorianCalendar cas = new GregorianCalendar();
+					cas.setTimeInMillis(rs.getTimestamp("cas").getTime());
+					Zapis o = new Zapis(cas, rs.getInt("kartoteka_id"), tip.getNaziv(), rs.getString("avtor"), dopolnila);
+					o.getCas().setTimeInMillis(rs.getTimestamp("cas").getTime());
 					o.setId(rs.getInt("id"));
 					
 					System.out.println("vmesna1: " + o.getAvtor());
@@ -319,8 +332,11 @@ public class ZapisDAO {
 					ArrayList<Dopolnilo> dopolnila = new ArrayList<Dopolnilo>();
 					
 					tip = Tip_zapisDAO.getInstance().najdiTip(rs.getInt("tip_id"));
-					//tip = rs2.getString("naziv");					
-					Zapis o = new Zapis(rs.getDate("cas"), rs.getInt("kartoteka_id"), tip.getNaziv(), rs.getString("avtor"), dopolnila);
+					//tip = rs2.getString("naziv");		
+					GregorianCalendar cas = new GregorianCalendar();
+					cas.setTimeInMillis(rs.getTimestamp("cas").getTime());
+					Zapis o = new Zapis(cas, rs.getInt("kartoteka_id"), tip.getNaziv(), rs.getString("avtor"), dopolnila);
+					o.getCas().setTimeInMillis(rs.getTimestamp("cas").getTime());
 					o.setId(rs.getInt("id"));
 					
 					System.out.println("vmesna1: " + o.getAvtor());
