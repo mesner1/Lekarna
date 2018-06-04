@@ -12,12 +12,12 @@
 <body>
 
 	<f:view>
-		<h:form>
+		<h:form enctype="multipart/form-data">
 
 			<f:metadata>
 				<f:viewParam name="id" value="#{zrno.pacientIme}" />
 			</f:metadata>
-
+  
 			#{zrno.pacientIme}
 			<br></br>
 			Nasvet: 
@@ -27,8 +27,9 @@
 
 
 
-
-			<h:commandButton value="Dodaj nasvet" actionListener="#{zrno.dodajNasvet(request.remoteUser, zrno.pacientIme)}" action="zdravnik.xhtml" />
+			<h:commandButton value="Dodaj nasvet"
+				actionListener="#{zrno.dodajNasvet(request.remoteUser, zrno.pacientIme)}"
+				action="zdravnik.xhtml" />
 
 		</h:form>
 	</f:view>

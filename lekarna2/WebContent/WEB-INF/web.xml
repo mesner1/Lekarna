@@ -65,6 +65,4 @@
 			<form-error-page>/napaka.xhtml</form-error-page>
 		</form-login-config>
 	</login-config>
-
-
 </web-app>
