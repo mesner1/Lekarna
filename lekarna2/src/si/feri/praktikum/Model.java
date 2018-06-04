@@ -30,6 +30,7 @@ public class Model {
 	private ArrayList<Dopolnilo> dopolnilaBrezRecepta = new ArrayList<Dopolnilo>();
 	private ArrayList<String> izbranaDopolnila = new ArrayList<String>();
 	private ArrayList<Zapis> izbraniZapisi = new ArrayList<Zapis>();
+	private ArrayList<Nasvet> izbraniNasveti = new ArrayList<Nasvet>();
 	private ArrayList<Kombinacije> izbraneKombinacije = new ArrayList<Kombinacije>();
 	private int izbranID;
 	
@@ -44,7 +45,6 @@ public class Model {
 
 	public void dodajNasvet(String avtor, String pacient) throws Exception {
 		novNasvet.setAvtor(avtor);
-		System.out.println("AVTOR NASVETA: " + novNasvet.getAvtor());
 		String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
 		int idKartoteke = Integer.parseInt(idPacienta);
 		novNasvet.setKartoteka_id(idKartoteke);
@@ -61,8 +61,16 @@ public class Model {
 			izbraniZapisi.get(i).getDopolnila().toString().replace("[", "").replace("]", "");
 		}
 		return izbraniZapisi;
+	}
+	
+	public ArrayList<Nasvet> izbraniNasveti(String ime) throws Exception {
+		String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
+		int idKartoteke = Integer.parseInt(idPacienta);
+		izbraniNasveti = (ArrayList<Nasvet>) NasvetDAO.getInstance().vrniVse(idKartoteke);
+		return izbraniNasveti;
 
 	}
+
 	
 	public Dopolnilo najdiZdravilo(String dopolnilo) throws Exception {
 		Dopolnilo najdeno = DopolniloDAO.getInstance().najdiDopolnilo(dopolnilo);
@@ -148,17 +156,7 @@ public class Model {
 					najdaljse = dopolnila.get(i).getTrajanje();
 				}
 			}
-//			dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-//			now = LocalDateTime.now();
-//			cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-//
-//			Calendar c = Calendar.getInstance();
-//			c.setTime(cas);
-//			c.add(Calendar.DATE, najdaljse);
-//
-//			Date koncniCas = c.getTime();
-//
-//			System.out.println("èas:" + koncniCas);
+
 			java.util.Date utilDate2 = new java.util.Date();
 			cal.setTime(utilDate2);
 			cal.add(Calendar.HOUR, najdaljse);
@@ -334,7 +332,8 @@ public class Model {
 			e.printStackTrace();
 		}
 	}
-
+	
+	
 	public void dodajPredpis(String avtor) {
 		try {
 
@@ -344,12 +343,7 @@ public class Model {
 			int idKartoteke = Integer.parseInt(idPacienta);
 			novZapis.setKartoteka_id(idKartoteke);
 			novZapis.setIzdan(0);
-			System.out.println(novZapis.getKartoteka_id());
-//			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-//			LocalDateTime now = LocalDateTime.now();
-//
-//			Date cas = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-//			System.out.println("èas:" + cas);
+
 			java.util.Date utilDate = new java.util.Date();
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(utilDate);
@@ -372,15 +366,26 @@ public class Model {
 				Zapis_dopolniloDAO.getInstance().shraniZapis_dopolnilo(novZapisDopolnila);
 
 			}
+			
+			novNasvet.setAvtor(avtor);
+			novNasvet.setKartoteka_id(idKartoteke);
+			novNasvet.setZapis_id(novZapis.getId());
+			int id = NasvetDAO.getInstance().shraniNasvet(novNasvet);
 
+			novNasvet = new Nasvet();
 			// novZapis.setDopolnila(izbranaDopolnila);
+			
 			novZapis = new Zapis();
 			novZapisDopolnila = new Zapis_dopolnilo();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		}catch(
+
+	Exception e)
+	{
+		e.printStackTrace();
 	}
+	}
+
 	
 	
 	public void novaIzdajaLekarnar(String avtor) {
