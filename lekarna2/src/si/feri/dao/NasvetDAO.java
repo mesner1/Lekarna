@@ -1,5 +1,6 @@
 package si.feri.dao;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,8 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import si.feri.vao.Nasvet;
+
+
 
 public class NasvetDAO {
 	private NasvetDAO() {
@@ -34,7 +37,7 @@ public class NasvetDAO {
 		try {
 			conn = ds.getConnection();
 			conn.createStatement().execute(
-					"create table nasvet (id int auto_increment, nasvet varchar(255) not null, avtor varchar(255) not null, hash varchar(255), zapis_id int, kartoteka_id int not null, primary key (id))");
+					"create table if not exists nasvet (id int auto_increment, nasvet varchar(255) not null, avtor varchar(255) not null, hash varchar(255), zapis_id int, kartoteka_id int not null, primary key (id))");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -44,7 +47,7 @@ public class NasvetDAO {
 
 	public Nasvet najdiNasvet(int id) throws Exception {
 		DataSource ds = (DataSource) new InitialContext().lookup("java:jboss/datasources/lekarna");
-		System.out.println("DAO: išèem " + id);
+		System.out.println("DAO: iÅ¡Ã¨em " + id);
 		Nasvet ret = null;
 		Connection conn = null;
 		try {
@@ -110,7 +113,7 @@ public class NasvetDAO {
 
 	public List<Nasvet> vrniVse(int id) throws Exception {
 		DataSource ds = (DataSource) new InitialContext().lookup("java:jboss/datasources/lekarna");
-		System.out.println(("DAO: vraèam vse nasvete"));
+		System.out.println(("DAO: vraÃ¨am vse nasvete"));
 		List<Nasvet> ret = new ArrayList<Nasvet>();
 		Connection conn = null;
 		try {

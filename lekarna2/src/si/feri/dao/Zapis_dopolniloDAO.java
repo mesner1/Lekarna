@@ -44,7 +44,6 @@ public class Zapis_dopolniloDAO {
 
 	public Zapis_dopolnilo najdiZapis_dopolnilo(int id) throws Exception {
 		DataSource ds = (DataSource) new InitialContext().lookup("java:jboss/datasources/lekarna");
-		System.out.println("DAO: išèem " + id);
 		Zapis_dopolnilo ret = null;
 		Connection conn = null;
 		try {
@@ -67,7 +66,7 @@ public class Zapis_dopolniloDAO {
 
 	public Zapis_dopolnilo najdiDoloceno(int dopolnilo, int zapis) throws Exception {
 		DataSource ds = (DataSource) new InitialContext().lookup("java:jboss/datasources/lekarna");
-		System.out.println("DAO: išèem " + zapis + ", " + dopolnilo);
+		System.out.println("DAO: iï¿½ï¿½em " + zapis + ", " + dopolnilo);
 		Zapis_dopolnilo ret = null;
 		Connection conn = null;
 		try {
@@ -117,7 +116,7 @@ public class Zapis_dopolniloDAO {
 
 	public List<Zapis_dopolnilo> vrniVse() throws Exception {
 		DataSource ds = (DataSource) new InitialContext().lookup("java:jboss/datasources/lekarna");
-		System.out.println(("DAO: vraèam vse èlane"));
+		System.out.println(("DAO: vraï¿½am vse ï¿½lane"));
 		List<Zapis_dopolnilo> ret = new ArrayList<Zapis_dopolnilo>();
 		Connection conn = null;
 		try {
@@ -137,5 +136,32 @@ public class Zapis_dopolniloDAO {
 			conn.close();
 		}
 		return ret;
+	}
+	
+	public List<Integer> vrniVsaZdravila(List<Integer> ids) throws Exception {
+		DataSource ds = (DataSource) new InitialContext().lookup("java:jboss/datasources/lekarna");
+		List<Integer> idsZdravila = new ArrayList<Integer>();
+		Connection conn = null;
+		for(int i = 0; i < ids.size(); i++) {
+		try {
+			conn = ds.getConnection();
+			PreparedStatement ps = conn.prepareStatement("select * from zapis_dopolnilo WHERE zapis_id=?",PreparedStatement.RETURN_GENERATED_KEYS);
+			ps.setInt(1, ids.get(i));
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Zapis_dopolnilo o = new Zapis_dopolnilo(rs.getInt("dopolnilo_id"), rs.getInt("zapis_id"),
+						rs.getInt("kolicina"));
+				o.setId(rs.getInt("id"));
+				idsZdravila.add(o.getDopolnilo_id());
+			}
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			conn.close();
+		}
+		
+	}
+		return idsZdravila;
 	}
 }

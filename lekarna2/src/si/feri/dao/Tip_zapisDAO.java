@@ -1,5 +1,6 @@
 package si.feri.dao;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,9 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import si.feri.vao.Tip_zapis;
+
+
+
 
 public class Tip_zapisDAO {
 
@@ -34,7 +38,7 @@ public class Tip_zapisDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				conn.createStatement().execute("create table if not exists  tip_zapis (id int auto_increment, naziv varchar(255), primary key (id))");
+				conn.createStatement().execute("create table tip_zapis (id int auto_increment, naziv varchar(255), primary key (id))");
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
