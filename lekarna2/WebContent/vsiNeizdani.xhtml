@@ -7,7 +7,7 @@
 
 <head>
 <meta charset="UTF-8" />
-<title>Home page</title>
+<title>Vsi neizdani</title>
 </head>
 <body>
 	<ui:include src="/header.xhtml" />
@@ -17,20 +17,12 @@
 	<f:view>
 		<h:form>
 
-			<f:metadata>
-				<f:viewParam name="id" value="#{zrno.pacientIme}" />
-			</f:metadata>
-
-			<p>
-				<font size="6">Pacient: #{zrno.pacientIme}</font>
-			</p>
 
 
 			<div align="center">
-				<h:dataTable id="customers"
-					value="#{zrno.izbraniZapisiLekarnar(zrno.pacientIme)}" var="c"
-					styleClass="tabela" border="1" align="center" float="center"
-					text-align="center">
+				<h:dataTable id="customers" value="#{zrno.neizdaniZapisiLekarnar()}"
+					var="c" styleClass="tabela" border="1" align="center"
+					float="center" text-align="center">
 					<h:column>
 
 						<f:facet name="header">
@@ -61,29 +53,29 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<b>Avtor: </b>
+							<b>Pacient: </b>
 						</f:facet>
-						<h:outputText value="#{c.avtor}" />
+						<h:outputText value="#{c.pacient}" />
 					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<b> Tip: </b>
-						</f:facet>
-						<h:outputText value="#{c.tip}" />
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<b>Izdano: </b>
-						</f:facet>
-						<h:commandButton value="Izdaj" onclick="if (! confirm('Ali res želite izdati recept?')) return false"
-							actionListener="#{zrno.izdaj(request.remoteUser, c.id, c.dopolnila)}"
-							action="pregledZapisovLekarnar.xhtml" />
+						<h:column>
+							<f:facet name="header">
+								<b>Avtor: </b>
+							</f:facet>
+							<h:outputText value="#{c.avtor}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<b> Tip: </b>
+							</f:facet>
+							<h:outputText value="#{c.tip}" />
+						</h:column>
+						<h:column>
+							<h:commandButton value="Izdaj"
+								actionListener="#{zrno.izdajPogledSkupaj(request.remoteUser, c.id, c.dopolnila, c.kartoteka_id)}"
+								action="vsiNeizdani.xhtml" />
 
 
-					</h:column>
-
-
-
+						</h:column>
 				</h:dataTable>
 			</div>
 			<br></br>
@@ -94,7 +86,7 @@
 					<h:commandButton value="Nova izdaja" action="izdajaLekarnar.xhtml" />
 					<b> </b>
 					<h:commandButton value="Preglej izdane"
-						action="vsiIzdani.xhtml" />
+						action="vsiIzdaniSkupaj.xhtml" />
 				</h:form>
 			</div>
 

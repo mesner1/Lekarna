@@ -17,14 +17,8 @@
 	<f:view>
 		<h:form>
 
-			<f:metadata>
-				<f:viewParam name="id" value="#{zrno.pacientIme}" />
-			</f:metadata>
-
-			<p><font size="6">Pacient: #{zrno.pacientIme}</font></p>
-			
 			<div align ="center">
-			<h:dataTable id="customers" value="#{zrno.vsiIzdani(zrno.pacientIme)}" var="c"
+			<h:dataTable id="customers" value="#{zrno.vsiIzdani()}" var="c"
 				styleClass="tabela" border="1" align="center" float="center" text-align="center" >
 				    <h:column>
 					 
@@ -74,7 +68,7 @@
 			
 			        <div align="center">
 	<h:form>	
-	<h:commandButton value="Nazaj" action="pregledZapisovLekarnar.xhtml" />
+	<h:commandButton value="Nazaj" action="vsiNeizdani.xhtml" />
 	
 	</h:form>
 	</div>
