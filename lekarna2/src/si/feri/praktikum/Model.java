@@ -51,43 +51,34 @@ public class Model {
 
 	private String pacientIme;
 	
+
+
+	public boolean preveriKombinacijo() throws Exception {
+	// kombinacije
+		String idPacienta = this.getPacientIme().substring(0, this.getPacientIme().indexOf(" -"));
+		int idKartoteke = Integer.parseInt(idPacienta);
+		
+		
+	ArrayList<Integer> izbranaDopolnilaId = (ArrayList<Integer>) DopolniloDAO.getInstance()
+			.poisciId(izbranaDopolnila);
+	System.out.println("izbranaDopolnila:" + izbranaDopolnilaId);
+	ArrayList<Integer> zauzitaDopolnila = kombiniraj(idKartoteke);
+	System.out.println("zauzitaDopolnila:" + zauzitaDopolnila);
 	
-	public void ustvariPdf() {
-		VelocityEngine ve = new VelocityEngine();
-		ve.init();
-		Map map = new HashMap();
-		ArrayList list = new ArrayList();
-		  map.put("name", "Cow");
-	        map.put("price", "$100.00");
-	        list.add( map );
-	 
-	        map = new HashMap();
-	        map.put("name", "Eagle");
-	        map.put("price", "$59.99");
-	        list.add( map );
-
-	        map = new HashMap();
-	        map.put("name", "Shark");
-	        map.put("price", "$3.99");
-	        list.add( map );
-		VelocityContext context = new VelocityContext();
-		context.put("petList", list);
-
-		/*
-		 * get the Template
-		 */
-
-		Template t = ve.getTemplate("template/test.vm");
-
-		/*
-		 * now render the template into a Writer, here a StringWriter
-		 */
-
-		StringWriter writer = new StringWriter();
-
-		t.merge(context, writer);
-		System.out.println( writer.toString() );
+	for (int i = 0; i < zauzitaDopolnila.size(); i++) {
+		for (int j = 0; j < izbranaDopolnilaId.size(); j++) {
+			System.out.println("primerjam " + zauzitaDopolnila.get(i) + " in " + izbranaDopolnilaId.get(j));
+			boolean vrni = KombinacijeDAO.getInstance().najdiKombinacije(zauzitaDopolnila.get(i),
+					izbranaDopolnilaId.get(j));
+			if (vrni == true) {
+				System.out.println("KOMBINACIJA!");
+				return false;
+			}
+		}
 	}
+	return true;
+	}
+	
 
 	public ArrayList<Dopolnilo> prikaziIzbranaDopolnila() throws Exception {
 		ArrayList<Dopolnilo> izbrana = new ArrayList<Dopolnilo>();
@@ -219,6 +210,7 @@ public class Model {
 		return izbraniZapisi;
 
 	}
+	
 
 	public void izdaj(String avtor, int idZapis, ArrayList<Dopolnilo> dopolnila) throws Exception {
 		try {
@@ -291,7 +283,6 @@ public class Model {
 
 			novZapisDopolnila.setZapis_id(novZapis.getId());
 
-			ZapisDAO.getInstance().posodobiIzdano(idZapis);
 
 			for (int i = 0; i < dopolnila.size(); i++) {
 				izbranaDopolnila.add(dopolnila.get(i).getNaziv());
@@ -315,6 +306,7 @@ public class Model {
 			e.printStackTrace();
 		}
 	}
+
 
 	public void izdajPogledSkupaj(String avtor, int idZapis, ArrayList<Dopolnilo> dopolnila, int idKartoteke)
 			throws Exception {
@@ -385,7 +377,6 @@ public class Model {
 
 			novZapisDopolnila.setZapis_id(novZapis.getId());
 
-			ZapisDAO.getInstance().posodobiIzdano(idZapis);
 
 			for (int i = 0; i < dopolnila.size(); i++) {
 				izbranaDopolnila.add(dopolnila.get(i).getNaziv());
@@ -531,7 +522,10 @@ public class Model {
 			e.printStackTrace();
 		}
 	}
+	
 
+	
+	
 	public void dodajPredpis(String avtor) {
 		try {
 
@@ -550,21 +544,6 @@ public class Model {
 			novZapis.setAvtor(avtor);
 			ZapisDAO.getInstance().shraniZapis(novZapis);
 
-			// kombinacije
-
-			ArrayList<Integer> izbranaDopolnilaId = (ArrayList<Integer>) DopolniloDAO.getInstance()
-					.poisciId(izbranaDopolnila);
-			ArrayList<Integer> zauzitaDopolnila = kombiniraj(idKartoteke);
-
-			for (int i = 0; i < zauzitaDopolnila.size(); i++) {
-				for (int j = 0; j < izbranaDopolnilaId.size(); j++) {
-					boolean vrni = KombinacijeDAO.getInstance().najdiKombinacije(zauzitaDopolnila.get(i),
-							izbranaDopolnilaId.get(j));
-					if (vrni == true)
-						System.out.println("KOMBINACIJA!");
-					break;
-				}
-			}
 
 			// //
 			novZapisDopolnila.setZapis_id(novZapis.getId());
@@ -577,6 +556,7 @@ public class Model {
 
 			}
 
+			if(novNasvet.getNasvet() != null) {
 			novNasvet.setAvtor(avtor);
 			novNasvet.setKartoteka_id(idKartoteke);
 			novNasvet.setZapis_id(novZapis.getId());
@@ -589,17 +569,17 @@ public class Model {
 				novNasvet.setHash(blockchain.get(i).mineBlock(difficulty));
 			}
 			i++;
+		
 			int id = NasvetDAO.getInstance().shraniNasvet(novNasvet);
 			novNasvet = new Nasvet();
 			// novZapis.setDopolnila(izbranaDopolnila);
-
+			}
 			novZapis = new Zapis();
 			novZapisDopolnila = new Zapis_dopolnilo();
 			kolicine = new ArrayList<Integer>();
 
-		} catch (
 
-		Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

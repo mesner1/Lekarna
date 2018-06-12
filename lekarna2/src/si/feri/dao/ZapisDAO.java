@@ -88,20 +88,11 @@ public class ZapisDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				PreparedStatement ps = conn.prepareStatement("update zapis set izdan=? where id=?",PreparedStatement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = conn.prepareStatement("update zapis set izdan=?, cas=cas where id=?",PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setInt(1,  1);
 				ps.setInt(2, id);
 				ps.executeUpdate();
-			//	ResultSet rs = ps.executeQuery();
-//				while (rs.next()) {
-////					PreparedStatement ps2 = conn.prepareStatement("select * from tip where id=?",PreparedStatement.RETURN_GENERATED_KEYS);
-////					ps2.setInt(1, rs.getInt("tip_id"));
-////					ResultSet rs2 = ps2.executeQuery();
-//					tip = TipDAO.getInstance().najdiTip(rs.getInt("tip_id"));
-//					//tip = rs2.getString("naziv");
-//					ret = new Zapis(id, rs.getDate("cas"), rs.getInt("kartoteka_id"), tip.getNaziv(), rs.getString("avtor"));
-//					break;
-//				}
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -205,7 +196,7 @@ public class ZapisDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE kartoteka_id=? AND tip_id=? AND izdan=?",PreparedStatement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE kartoteka_id=? AND tip_id=? AND izdan=? ORDER BY cas DESC",PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, id);
 				ps.setInt(2, 1);
 				ps.setInt(3, 0);
@@ -263,7 +254,7 @@ public class ZapisDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE tip_id=? AND izdan=?",PreparedStatement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE tip_id=? AND izdan=? ORDER BY cas DESC",PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, 1);
 				ps.setInt(2, 0);
 				ResultSet rs = ps.executeQuery();
@@ -339,7 +330,7 @@ public class ZapisDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE kartoteka_id=? AND tip_id=?",PreparedStatement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE kartoteka_id=? AND tip_id=? ORDER BY cas DESC",PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, id);
 				ps.setInt(2, 2);
 				ResultSet rs = ps.executeQuery();
@@ -397,7 +388,7 @@ public class ZapisDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE tip_id=?",PreparedStatement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE tip_id=? ORDER BY cas DESC",PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, 2);
 				ResultSet rs = ps.executeQuery();
 				while (rs.next()) {
@@ -454,7 +445,7 @@ public class ZapisDAO {
 			Connection conn=null;
 			try {
 				conn=ds.getConnection();
-				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE kartoteka_id=? AND tip_id=?",PreparedStatement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE kartoteka_id=? AND tip_id=? ORDER BY cas DESC",PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, id);
 				ps.setInt(2, neizdani);
 				ResultSet rs = ps.executeQuery();
@@ -517,7 +508,7 @@ public class ZapisDAO {
 		//	System.out.println("prvi:"+dateFormat.format(cal));
 			try {
 				conn=ds.getConnection();
-				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE kartoteka_id=? AND tip_id=?",PreparedStatement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = conn.prepareStatement("select * from zapis WHERE kartoteka_id=? AND tip_id=? ORDER BY cas DESC",PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, id);
 				ps.setInt(2, 3);
 				ResultSet rs = ps.executeQuery();
