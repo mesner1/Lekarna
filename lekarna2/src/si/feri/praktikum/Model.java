@@ -1,12 +1,18 @@
-package si.feri.praktikum;
+package praktikum;
 
-import si.feri.dao.*;
+import dao.*;
 
 import javax.servlet.http.HttpServletRequest;
-import si.feri.email.EmailPoslji;
-import si.feri.vao.*;
-import si.feri.blockchain.*;
+import javax.xml.transform.TransformerException;
 
+import org.apache.fop.apps.FOPException;
+
+import Email.*;
+import vao.*;
+import xmlvpdf.Xml;
+import blockchain.*;
+
+import java.io.IOException;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -23,9 +29,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
+
 
 @ManagedBean(name = "zrno")
 @SessionScoped
@@ -50,6 +54,26 @@ public class Model {
 	private ArrayList<Integer> kolicine = new ArrayList<Integer>();
 
 	private String pacientIme;
+	
+	
+	public void ustvariPdf() {
+		Xml ob = new Xml();
+		try {
+			ob.writeXmlFile(izbraniZapisi);
+		} catch (FOPException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+
 	
 
 
