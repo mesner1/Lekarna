@@ -85,7 +85,7 @@
 						<f:facet name="header">
 							<b> Izvozi PDF: </b>
 						</f:facet>
-							<h:commandLink value="PDF" outcome="domov.xhtml" action="#{zrno.ustvariPdf}" />
+							<h:commandLink value="PDF" onclick="if (! confirm('Pdf datoteka se ustvari na namizju.Nadaljuj?')) return false" outcome="domov.xhtml" action="#{zrno.ustvariPdf}" />
 					</h:column>
 
 
