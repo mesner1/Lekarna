@@ -57,25 +57,27 @@
 						</f:facet>
 						<h:outputText value="#{c.pacient}" />
 					</h:column>
-						<h:column>
-							<f:facet name="header">
-								<b>Avtor: </b>
-							</f:facet>
-							<h:outputText value="#{c.avtor}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">
-								<b> Tip: </b>
-							</f:facet>
-							<h:outputText value="#{c.tip}" />
-						</h:column>
-						<h:column>
-							<h:commandButton value="Izdaj"
-								actionListener="#{zrno.izdajPogledSkupaj(request.remoteUser, c.id, c.dopolnila, c.kartoteka_id)}"
-								action="vsiNeizdani.xhtml" />
+					<h:column>
+						<f:facet name="header">
+							<b>Avtor: </b>
+						</f:facet>
+						<h:outputText value="#{c.avtor}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<b> Tip: </b>
+						</f:facet>
+						<h:outputText value="#{c.tip}" />
+					</h:column>
+					<h:column>
+
+						<h:commandButton value="Izdaj"
+							onclick="if (! confirm('Ali res želite izdati recept?')) return false"
+							actionListener="#{zrno.izdajPogledSkupaj(request.remoteUser, c.id, c.dopolnila, c.kartoteka_id)}"
+							action="vsiNeizdani.xhtml" />
 
 
-						</h:column>
+					</h:column>
 				</h:dataTable>
 			</div>
 			<br></br>

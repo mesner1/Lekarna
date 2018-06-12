@@ -18,7 +18,7 @@
 		<div class="header-right">
 			<h:form>
 				<h:commandLink value="Domov" action="domov.xhtml" />
-				<h:commandLink value="Nov predpis" action="zdravnik.xhtml"
+				<h:commandLink value="Predpisi" action="zdravnik.xhtml"
 					rendered="#{request.isUserInRole('zdravniki')}" />
 				<h:commandLink value="Izdaj zdravilo" action="lekarnar.xhtml"
 					rendered="#{request.isUserInRole('lekarnarji')}" />

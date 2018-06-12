@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core">
+
 
 
 
@@ -76,9 +77,28 @@ fieldset {
 				<br></br>
 				<h:commandButton value="Nazaj" action="novPredpis.xhtml" />
 
+
 				<h:commandButton value="Dodaj"
+					onclick="if (! confirm('Ali ste prepričani?')) return false"
 					actionListener="#{zrno.dodajPredpis(request.remoteUser)}"
+					rendered="#{zrno.preveriKombinacijo()==true}"
 					action="zdravnik.xhtml" />
+
+
+				<h:panelGroup layout="block"
+					rendered="#{zrno.preveriKombinacijo()==false}">
+					<p>
+						<font color="red">Vaš pacient uživa zdravila, ki jih z
+							izbranimi zdravili ni priporočljivo jemati.</font>
+					</p>
+
+					<h:commandLink value="Kljub temu dodaj izbrana zdravila"
+						onclick="if (! confirm('Ali ste prepričani?')) return false"
+						actionListener="#{zrno.dodajPredpis(request.remoteUser)}"
+						action="zdravnik.xhtml" />
+				</h:panelGroup>
+
+
 			</div>
 		</h:form>
 	</f:view>
