@@ -1,4 +1,6 @@
-package si.feri.vao;
+package vao;
+
+import java.util.Date;
 
 public class Kartoteka {
 
@@ -6,6 +8,8 @@ public class Kartoteka {
 	private String ime;
 	private String priimek;
 	private String email;
+	private int starost;
+	private int spol;
 	
 	public Kartoteka() {
 	}
@@ -21,6 +25,23 @@ public class Kartoteka {
 		this.ime = ime;
 		this.priimek = priimek;
 		this.email=email;
+	}
+	
+	public Kartoteka(int id, String ime, String priimek, String email, int datumRojstva, int spol) {
+		this.id = id;
+		this.ime = ime;
+		this.priimek = priimek;
+		this.email=email;
+		this.starost = datumRojstva;
+		this.spol=spol;
+	}
+	
+	public Kartoteka(String ime, String priimek, String email, int datumRojstva, int spol) {
+		this.ime = ime;
+		this.priimek = priimek;
+		this.email=email;
+		this.starost = datumRojstva;
+		this.spol=spol;
 	}
 	
 	public int getId() {
@@ -49,10 +70,28 @@ public class Kartoteka {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	
+
+	public int getStarost() {
+		return starost;
+	}
+
+	public void setStarost(int starost) {
+		this.starost = starost;
+	}
+
+	public int getSpol() {
+		return spol;
+	}
+
+	public void setSpol(int spol) {
+		this.spol = spol;
+	}
 
 	@Override
 	public String toString() {
-		return id + " - " + ime + " " + priimek;
+		return ime + " " + priimek + " (" + id + ")";
 	}
 
 

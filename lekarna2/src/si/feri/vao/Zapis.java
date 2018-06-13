@@ -1,4 +1,4 @@
-package si.feri.vao;
+package vao;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -143,6 +143,13 @@ public class Zapis {
       return formatDateTime;
 	}
 
+	public String getLeDatumCas() {
+		LocalDateTime cas2 = toLocalDateTime(cas);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+      String formatDateTime = cas2.format(formatter);
+      return formatDateTime;
+	}
 	
 	
 	public String getPacient() {

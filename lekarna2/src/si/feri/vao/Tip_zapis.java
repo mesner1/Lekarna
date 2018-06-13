@@ -1,4 +1,4 @@
-package si.feri.vao;
+package vao;
 
 public class Tip_zapis {
 

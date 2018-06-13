@@ -1,4 +1,4 @@
-package si.feri.vao;
+package vao;
 
 
 import java.util.List;
