@@ -1,7 +1,4 @@
-package si.feri.dao;
-
-import si.feri.dao.*;
-import si.feri.vao.*;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +8,9 @@ import java.util.Date;
 import java.util.List;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+
+import dao.*;
+import vao.*;
 
 
 

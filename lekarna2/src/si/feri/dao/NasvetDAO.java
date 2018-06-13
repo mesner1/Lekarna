@@ -1,4 +1,4 @@
-package si.feri.dao;
+package dao;
 
 
 import java.sql.Connection;
@@ -10,7 +10,7 @@ import java.util.List;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import si.feri.vao.Nasvet;
+import vao.Nasvet;
 
 
 
