@@ -43,7 +43,9 @@
 			<br></br>
 			</div>
             <div class="pacient">
-			<h:commandButton value="Nazaj" action="pregledZapisovLekarnar.xhtml" />
+			<h:commandButton value="Domov" action="lekarnar.xhtml" >
+			<f:param name="from" value="#{request.requestURI}" />
+			</h:commandButton>
             </div>
 		</h:form>
 	</f:view>
