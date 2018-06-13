@@ -83,6 +83,32 @@ public class ZapisDAO {
 			return ret;
 		}
 		
+		public Zapis najdiZapis() throws Exception {
+			DataSource ds=(DataSource)new InitialContext().lookup("java:jboss/datasources/lekarna");	
+			Zapis ret = null;
+			Tip_zapis tip = new Tip_zapis();
+			Connection conn=null;
+			try {
+				conn=ds.getConnection();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM zapis WHERE id = (SELECT MAX(id) FROM zapis where tip_id=?)",PreparedStatement.RETURN_GENERATED_KEYS);
+				ps.setInt(1, 2);
+				ResultSet rs = ps.executeQuery();
+				while (rs.next()) {
+					GregorianCalendar cas = new GregorianCalendar();
+					cas.setTimeInMillis(rs.getTimestamp("cas").getTime());
+					ret = new Zapis(rs.getInt("id"), cas, rs.getInt("kartoteka_id"), "izdaja", rs.getString("avtor"));
+					break;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				conn.close();
+			}
+			return ret;
+		}
+		
+		
+		
 		public Zapis najdiZgoljIzdane(int id) throws Exception {
 			DataSource ds=(DataSource)new InitialContext().lookup("java:jboss/datasources/lekarna");	
 			System.out.println("DAO: išèem "+id);
