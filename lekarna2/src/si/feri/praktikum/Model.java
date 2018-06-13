@@ -643,9 +643,63 @@ public class Model {
 
 			}
 
+
+			// POSILJANJE OBVESTILA
+			izbranaKartoteka = KartotekaDAO.getInstance().najdiKartoteko(idKartoteke);
+			String email = izbranaKartoteka.getEmail();
+			String ime = izbranaKartoteka.getIme();
+			String priimek = izbranaKartoteka.getPriimek();
+			EmailPoslji e = new EmailPoslji();
+			e.poslji(avtor, email, ime, priimek);
+
+
+			// IZRAČUN ZAUŽITJA
+
+			idPacienta = this.getPacientIme().substring(this.getPacientIme().indexOf("(") + 1, this.getPacientIme().indexOf(")"));
+			idKartoteke = Integer.parseInt(idPacienta);
+			novZapis.setKartoteka_id(idKartoteke);
+			ArrayList<Dopolnilo> pretvorjena = (ArrayList<Dopolnilo>) DopolniloDAO.getInstance().pretvori(izbranaDopolnila);
+			int najdaljse = pretvorjena.get(0).getTrajanje() * pretvorjena.get(0).getKolicina();
+			for (int i = 0; i < pretvorjena.size(); i++) {
+				if (pretvorjena.get(i).getTrajanje() * pretvorjena.get(i).getKolicina() > najdaljse) {
+					najdaljse = pretvorjena.get(i).getTrajanje() * pretvorjena.get(i).getKolicina();
+				}
+			}
+
+			java.util.Date utilDate2 = new java.util.Date();
+			cal.setTime(utilDate2);
+			cal.add(Calendar.DATE, najdaljse);
+			new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal.getTime());
+
+			novZapis.setCas(cal);
+			novZapis.setTip("zadnje zaužitje");
+
+			ZapisDAO.getInstance().shraniZapis(novZapis);
+
+			novZapisDopolnila.setZapis_id(novZapis.getId());
+
+
+			for (int i = 0; i < pretvorjena.size(); i++) {
+				izbranaDopolnila.add(pretvorjena.get(i).getNaziv());
+			}
+
+			for (int i = 0; i < izbranaDopolnila.size(); i++) {
+				Dopolnilo izbrano = DopolniloDAO.getInstance().najdiDopolnilo(izbranaDopolnila.get(i));
+				Zapis zadnji = ZapisDAO.getInstance().najdiZapis();
+				int zadnjiID = zadnji.getId();
+				System.out.println("zadnjiID: " + zadnjiID);
+				Zapis_dopolnilo najden = Zapis_dopolniloDAO.getInstance().najdiDoloceno(izbrano.getId(), zadnjiID);
+				novZapisDopolnila.setDopolnilo_id(izbrano.getId());
+				novZapisDopolnila.setKolicina(najden.getKolicina());
+				Zapis_dopolniloDAO.getInstance().shraniZapis_dopolnilo(novZapisDopolnila);
+
+			}
+
 			// novZapis.setDopolnila(izbranaDopolnila);
 			novZapis = new Zapis();
 			novZapisDopolnila = new Zapis_dopolnilo();
+			izbranaDopolnila = new ArrayList<String>();
+
 
 		} catch (Exception e) {
 			e.printStackTrace();
