@@ -120,8 +120,8 @@ public class Xml {
 	        
 	        
 	    }
-	    
-	    File xsltFile = new File("C:\\Users\\Asus\\Desktop\\praktikum\\lekarna\\WebContent\\template.xsl");
+	    File dataDir = new File(System.getProperty("jboss.server.data.dir"));
+	    File xsltFile = new File(dataDir,"template.xsl");
         // the XML file which provides the input
         StreamSource xmlSource = new StreamSource(new File(home + "//recept.xml"));
         // create an instance of fop factory
