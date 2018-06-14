@@ -22,10 +22,13 @@
 				<div align="center" class="pacient">
 
 					Graf izdaj posameznega zdravila
-					<b:selectOneMenu class="dropdown"
-						value="#{zrnoStatistika.izbranoZdravilo}">
-						<f:selectItems value="#{zrnoStatistika.zdravila}" />
-					</b:selectOneMenu>
+					
+					    <p:autoComplete value="#{zrnoStatistika.izbranoZdraviloNaziv}"
+			completeMethod="#{searchBean.autoCompleteZdravilo}"
+			forceSelection="true" required="true"
+			requiredMessage="Izberite pacienta" />
+					
+					
 
 					<div align="center">
 						<h:commandButton value="Prikaži" action="prikaziGraf.xhtml"
@@ -33,7 +36,7 @@
 							styleClass="form-control radius-none">
 						</h:commandButton>
 					</div>
-					<br></br>
+					<br></br><br></br>
 					<h:commandLink value="Graf izdaj vseh zdravil"
 						actionListener="#{zrnoStatistika.init()}"
 						action="prikaziGrafVseh.xhtml" />
