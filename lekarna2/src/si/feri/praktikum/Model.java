@@ -119,7 +119,7 @@ public class Model {
 	public ArrayList<Integer> pridobiZapise(int idKartoteke) throws Exception {
 		ArrayList<Integer> nedavnoZauziti = new ArrayList<Integer>();
 		nedavnoZauziti = (ArrayList<Integer>) ZapisDAO.getInstance().vrniVseZauzite(idKartoteke);
-		System.out.println("ZauÅ¾iti: " + nedavnoZauziti + " " + nedavnoZauziti.size());
+		System.out.println("Zaužiti: " + nedavnoZauziti + " " + nedavnoZauziti.size());
 		return nedavnoZauziti;
 	}
 
@@ -289,7 +289,7 @@ public class Model {
 			novZapisDopolnila = new Zapis_dopolnilo();
 			izbranaDopolnila = new ArrayList<String>();
 
-			// IZRAÄŒUN ZAUÅ½ITJA
+			// IZRAÈUN ZAUŽITJA
 
 			idPacienta = this.getPacientIme().substring(this.getPacientIme().indexOf("(") + 1, this.getPacientIme().indexOf(")"));
 			idKartoteke = Integer.parseInt(idPacienta);
@@ -307,7 +307,7 @@ public class Model {
 			new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal.getTime());
 
 			novZapis.setCas(cal);
-			novZapis.setTip("zadnje zauÅ¾itje");
+			novZapis.setTip("zadnje zaužitje");
 
 			ZapisDAO.getInstance().shraniZapis(novZapis);
 
@@ -384,7 +384,7 @@ public class Model {
 			novZapisDopolnila = new Zapis_dopolnilo();
 			izbranaDopolnila = new ArrayList<String>();
 
-			// IZRAÄŒUN ZAUÅ½ITJA
+			// IZRAÈUN ZAUŽITJA
 
 			novZapis.setKartoteka_id(idKartoteke);
 			System.out.println(novZapis.getKartoteka_id());
@@ -401,7 +401,7 @@ public class Model {
 			new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal.getTime());
 
 			novZapis.setCas(cal);
-			novZapis.setTip("zadnje zauÅ¾itje");
+			novZapis.setTip("zadnje zaužitje");
 
 			ZapisDAO.getInstance().shraniZapis(novZapis);
 
@@ -657,7 +657,7 @@ public class Model {
 			novZapis = new Zapis();
 
 
-			// IZRAÄŒUN ZAUÅ½ITJA
+			// IZRAÈUN ZAUŽITJA
 
 			System.out.println("kolicine: " + kolicine);
 			idPacienta = this.getPacientIme().substring(this.getPacientIme().indexOf("(") + 1, this.getPacientIme().indexOf(")"));
@@ -667,14 +667,14 @@ public class Model {
 			ArrayList<Dopolnilo> pretvorjena = (ArrayList<Dopolnilo>) DopolniloDAO.pretvori(izbranaDopolnila);
 			int najdaljse = pretvorjena.get(0).getTrajanje() * kolicine.get(0);
 			
-			System.out.println("najdaljÅ¡e1"+ najdaljse);
+			System.out.println("najdaljše1"+ najdaljse);
 			for (int i = 0; i < pretvorjena.size(); i++) {
 				System.out.println(pretvorjena.get(i).getTrajanje());
 				System.out.println(kolicine.get(i));
 				if (pretvorjena.get(i).getTrajanje() * kolicine.get(i) > najdaljse) {
 					najdaljse = pretvorjena.get(i).getTrajanje() * kolicine.get(i);
 				}
-				System.out.println("najdaljÅ¡e: " + najdaljse);
+				System.out.println("najdaljše: " + najdaljse);
 			}
 			
 			izbranaDopolnila = new ArrayList<String>();
@@ -685,7 +685,7 @@ public class Model {
 			new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal.getTime());
 
 			novZapis.setCas(cal);
-			novZapis.setTip("zadnje zauÅ¾itje");
+			novZapis.setTip("zadnje zaužitje");
 
 			ZapisDAO.getInstance().shraniZapis(novZapis);
 
